@@ -143,7 +143,11 @@ cd ${WORKDIR}
 # Setup binary requirements
 if [ -n "$(command -v apt-get)" ]; then
     # For apt-get-based Linux distributions (Ubuntu, Debian)
-    sudo apt-get -y install curl wget tar unzip python-dev build-essential libssl-dev libxslt-dev libsasl2-dev libffi-dev libbz2-dev libyaml-dev python3-dev
+    if [[ ${PY_VERSION::1} == "2" ]]; then
+        sudo apt-get -y install curl wget tar unzip python-dev build-essential libssl-dev libxslt-dev libsasl2-dev libffi-dev libbz2-dev libyaml-dev
+    else
+        sudo apt-get -y install curl wget tar unzip python3-dev build-essential libssl-dev libxslt-dev libsasl2-dev libffi-dev libbz2-dev libyaml-dev
+    fi
 elif [ -n "$DNF_COMMAND" -a -n "$(command -v ${DNF_COMMAND})" ]; then
     # For yum/dnf-based distributions (RHEL, Centos)
     sudo ${DNF_COMMAND} -y install curl wget tar unzip make gcc gcc-c++ libffi-devel libxml2-devel bzip2-devel libxslt-devel openssl-devel
