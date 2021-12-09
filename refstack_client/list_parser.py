@@ -147,8 +147,8 @@ class TestListParser(object):
                 else:
                     test_list.append(test_id + attr)
             except KeyError:
-                self.logger.warning("Test %s not found in Tempest list." %
-                                    test_id)
+                self.logger.debug("Test %s not found in Tempest list." %
+                                  test_id)
         self.logger.debug("Number of tests: " + str(len(test_list)))
         return test_list
 
