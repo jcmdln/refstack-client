@@ -94,11 +94,11 @@ if [ -n "$(command -v apt-get)" ]; then
     # If we run script in container we need sudo
     if [ ! -n "$(command -v sudo)" ]; then
         apt-get update || if [ $? -ne 0 ]; then exit 1; fi
-        apt-get -y install sudo
+        DEBIAN_FRONTEND=noninteractive apt-get -y install sudo
     else
         sudo apt-get update || if [ $? -ne 0 ]; then exit 1; fi
     fi
-    sudo apt-get -y install git
+    sudo DEBIAN_FRONTEND=noninteractive apt-get -y install git
 elif [ -n "$(command -v yum)" ]; then
     # For yum-based distributions (RHEL, Centos)
     # If we run script in container we need sudo
@@ -144,9 +144,9 @@ cd ${WORKDIR}
 if [ -n "$(command -v apt-get)" ]; then
     # For apt-get-based Linux distributions (Ubuntu, Debian)
     if [[ ${PY_VERSION::1} == "2" ]]; then
-        sudo apt-get -y install curl wget tar unzip python-dev build-essential libssl-dev libxslt-dev libsasl2-dev libffi-dev libbz2-dev libyaml-dev
+        sudo DEBIAN_FRONTEND=noninteractive apt-get -y install curl wget tar unzip python-dev build-essential libssl-dev libxslt-dev libsasl2-dev libffi-dev libbz2-dev libyaml-dev
     else
-        sudo apt-get -y install curl wget tar unzip python3-dev build-essential libssl-dev libxslt-dev libsasl2-dev libffi-dev libbz2-dev libyaml-dev
+        sudo DEBIAN_FRONTEND=noninteractive apt-get -y install curl wget tar unzip python3-dev build-essential libssl-dev libxslt-dev libsasl2-dev libffi-dev libbz2-dev libyaml-dev
     fi
 elif [ -n "$DNF_COMMAND" -a -n "$(command -v ${DNF_COMMAND})" ]; then
     # For yum/dnf-based distributions (RHEL, Centos)
