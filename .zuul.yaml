@@ -1,8 +1,9 @@
 - project:
     templates:
       - openstack-cover-jobs
+      - openstack-python36-jobs
       - openstack-python37-jobs
-      - openstack-python3-yoga-jobs
+      - openstack-python3-zed-jobs
     check:
       jobs:
         - refstack-client-devstack-master:
@@ -12,6 +13,10 @@
               - ^doc/.*$
               - ^.gitignore$
               - ^.gitreview$
+        - refstack-client-devstack-yoga:
+            irrelevant-files: *refstack-client-irrelevant-files
+        - refstack-client-devstack-xena:
+            irrelevant-files: *refstack-client-irrelevant-files
         - refstack-client-devstack-wallaby:
             irrelevant-files: *refstack-client-irrelevant-files
         - refstack-client-devstack-victoria:
@@ -24,6 +29,10 @@
     gate:
       jobs:
         - refstack-client-devstack-master:
+            irrelevant-files: *refstack-client-irrelevant-files
+        - refstack-client-devstack-yoga:
+            irrelevant-files: *refstack-client-irrelevant-files
+        - refstack-client-devstack-xena:
             irrelevant-files: *refstack-client-irrelevant-files
         - refstack-client-devstack-wallaby:
             irrelevant-files: *refstack-client-irrelevant-files
