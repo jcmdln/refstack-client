@@ -1,0 +1,33 @@
+# A minimal accounts.yaml file
+# Will likely not work with swift, since additional
+# roles are required. For more documentation see:
+# https://opendev.org/openstack/tempest/src/branch/master/etc/accounts.yaml.sample
+
+- password: tempest_admin_1
+  project_name: tempest_admin_1
+  username: tempest_admin_1
+  roles: [admin]
+  types: [admin]
+
+- password: tempest_admin_2
+  project_name: tempest_admin_2
+  username: tempest_admin_2
+  roles: [admin]
+  types: [admin]
+
+- password: tempest_reseller_1
+  project_name: tempest_reseller_1
+  username: tempest_reseller_1
+  roles: [ResellerAdmin]
+  types: [reseller_admin]
+
+- password: tempest_reseller_2
+  project_name: tempest_reseller_2
+  username: tempest_reseller_2
+  roles: [ResellerAdmin]
+  types: [reseller_admin]
+
+- password: tempest_user_1
+  project_name: tempest_user_1
+  username: tempest_user_1
+  roles: [member, _member_]

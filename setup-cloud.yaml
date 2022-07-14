@@ -1,0 +1,70 @@
+- hosts: localhost
+  any_errors_fatal: true
+
+  vars:
+    tempest_users: "{{ lookup('file', 'etc/accounts.yaml') | from_yaml }}"
+
+  tasks:
+    - name: Create Tempest external network
+      openstack.cloud.network:
+        name: Tempest
+        state: present
+        external: true
+        shared: true
+
+    - name: Create Private subnet for Tempest external network
+      openstack.cloud.subnet:
+        name: Private
+        state: present
+        network_name: Tempest
+        cidr: 192.168.250.0/24
+        dns_nameservers:
+          - 8.8.8.8
+          - 1.1.1.1
+
+    - name: Create a router attached to the External and Tempest networks
+      openstack.cloud.router:
+        name: Internal
+        state: present
+        network: External
+        interfaces:
+          - Private
+
+    - name: Create Tempest roles
+      openstack.cloud.identity_role:
+        name: "{{ item.1 }}"
+        state: present
+      loop: "{{ tempest_users | subelements('roles') }}"
+      loop_control:
+        label: "{{ item.1 }}"
+
+    - name: Create Tempest projects
+      openstack.cloud.project:
+        name: "{{ item.project_name }}"
+        state: present
+        domain_id: default
+        enabled: True
+      loop: "{{ tempest_users }}"
+      loop_control:
+        label: "{{ item.project_name }}"
+
+    - name: Create Tempest users
+      openstack.cloud.identity_user:
+        name: "{{ item.username }}"
+        state: present
+        password: "{{ item.password }}"
+        default_project: "{{ item.project_name }}"
+        domain: default
+        update_password: always
+      loop: "{{ tempest_users }}"
+      loop_control:
+        label: "{{ item.username }}"
+
+    - name: Add Tempest users to roles
+      openstack.cloud.role_assignment:
+        user: "{{ item.0.username }}"
+        role: "{{ item.1 }}"
+        project: "{{ item.0.project_name }}"
+      loop: "{{ tempest_users | subelements('roles') }}"
+      loop_control:
+        label: "Add user '{{ item.0.username }}' to role '{{ item.1 }}'"
