@@ -6,7 +6,7 @@ source admin-openrc.sh
 ./setup_env -p 3 -c $(curl -s https://api.github.com/repos/openstack/tempest/commits/master | jq -r '.sha')
 source .venv/bin/activate
 refstack-client config --use-test-accounts="etc/accounts.yaml" --overrides \
-  "auth.tempest_roles='',compute.fixed_network_name=Tempest,compute-feature-enabled.hostname_fqdn_sanitization=true,compute-feature-enabled.xenapi_apis=true,identity.v3_endpoint_type=public,validation.image_ssh_password=gocubsgo,validation.ssh_shell_prologue='set -eu -o pipefail;',validation.ssh_timeout=120"
+  "compute.fixed_network_name=Tempest,compute-feature-enabled.hostname_fqdn_sanitization=true,compute-feature-enabled.xenapi_apis=true,identity.v3_endpoint_type=public,validation.image_ssh_password=gocubsgo,validation.ssh_shell_prologue='set -eu -o pipefail;',validation.ssh_timeout=120"
 
 # (Errata) Patch Tempest tempurl bug
 cd .tempest
